@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
-import AppContainer from '../../ui/containers/AppContainer.jsx';
+import AppContainer from '../../ui/containers/AppContainer.js';
 
 const browserHistory = createBrowserHistory();
 
