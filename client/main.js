@@ -4,10 +4,10 @@ import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 import { renderRoutes } from '../imports/startup/client/routes.js';
 
-import '../imports/startup/both/accounts-config.js';
+console.log('inside client main');
+import '../imports/startup/both';
 import 'react-select/dist/react-select.css';
 
 Meteor.startup(() => {
-    console.log('In Startup');
     render(renderRoutes(), document.getElementById('render-target'));
 });

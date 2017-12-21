@@ -1,6 +1,10 @@
-import { Accounts } from 'meteor/accounts-base';
+import { AccountsTemplates } from 'meteor/useraccounts:core';
 
-Accounts.ui.config({
-    passwordSignupFields: 'EMAIL_ONLY',
+console.log('inside accounts config');
+
+AccountsTemplates.configure({
+    confirmPassword: true,
+    enablePasswordChange: true,
+    showForgotPasswordLink: true,
+    showResendVerificationEmailLink: false,
 });
- 

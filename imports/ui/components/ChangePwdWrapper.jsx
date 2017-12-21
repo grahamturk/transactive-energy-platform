@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
-import { AccountsTemplates } from 'meteor/useraccounts:core';
 
-export default class AccountsUIWrapper extends Component {
+export default class ChangePwdWrapper extends Component {
     componentDidMount() {
-        console.log('AccountsTemplate state: ' + AccountsTemplates.getState());
-        this.view = Blaze.render(Template.atForm,
+        this.view = Blaze.render(Template.ChangePwdForm,
             ReactDOM.findDOMNode(this.refs.container));
     }
 

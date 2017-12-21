@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Select from 'react-select';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line } from 'recharts';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 export default class EnergyGraph extends Component {
     constructor(props) {
@@ -32,19 +33,17 @@ export default class EnergyGraph extends Component {
     }
 
     handleClick() {
-        console.log(this.state.selectedState);
+        //console.log(this.state.selectedState);
         const self = this;
         Meteor.call('fetchEnergyData', this.state.selectedState, (error, result) => {
             if (error) {
-                console.log('inside error in client');
                 alert(error.error);
                 self.setState({
                     hasEnergyData: false,
                     energyData: [],
                 });
             } else {
-                console.log('inside return client');
-                console.log(result);
+                //console.log(result);
                 self.setState({
                     hasEnergyData: true,
                     energyData: result,
@@ -59,8 +58,8 @@ export default class EnergyGraph extends Component {
         let graphComponent = '';
         if (this.state.hasEnergyData) {
 
-            console.log('energyData');
-            console.log(this.state.energyData);
+            //console.log('energyData:');
+            //console.log(this.state.energyData);
             const endata = [];
             for (let pair of this.state.energyData) {
                 endata.push({
@@ -87,21 +86,38 @@ export default class EnergyGraph extends Component {
         }
 
         return (
-            <div>
-                <Select
-                    name="selected-state"
-                    options={options}
-                    onChange={this.handleSelect.bind(this)}
-                    value={this.state.selectedState}
-                    simpleValue
-                    clearable
-                    autofocus
-                />
-                <button disabled={!this.state.selectedState} onClick={this.handleClick}>
-                    Get Energy Data!
-                </button>
-                { graphComponent }
-            </div>
+            <Grid>
+                <Row>
+                    <Col md={12}>
+                        <p>
+                            Please select a state to view its annual energy consumption:
+                        </p>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={4}>
+                        <Select
+                            name="selected-state"
+                            options={options}
+                            onChange={this.handleSelect.bind(this)}
+                            value={this.state.selectedState}
+                            simpleValue
+                            clearable
+                            autoFocus
+                        />
+                    </Col>
+                    <Col md={4}>
+                        <Button bsStyle="primary" disabled={!this.state.selectedState} onClick={this.handleClick}>
+                            Get Energy Data!
+                        </Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12}>
+                        { graphComponent }
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }

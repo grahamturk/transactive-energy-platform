@@ -4,6 +4,11 @@ import { Meteor } from 'meteor/meteor';
 import { Links } from '../../api/links/links.js';
 
 Meteor.startup(() => {
+
+  Meteor.users.deny({
+      update() { return true; }
+  });
+
   // if the Links collection is empty
   if (Links.find().count() === 0) {
     const data = [
@@ -31,4 +36,30 @@ Meteor.startup(() => {
 
     data.forEach(link => Links.insert(link));
   }
+
+  /**
+  if (Meteor.users.find().count() <= 1) {
+    const newUsers = [
+      {
+        email: 'trabuzin@kth.se',
+        password: 'trabuzin',
+        profile: {
+          name: 'Tin Rabuzin',
+          monthlyConsumption: '10',
+        },
+      },
+      {
+        email: 'vappelgren@kth.se',
+        password: 'vappelgren',
+        profile: {
+          name: 'Viktor Apelgren',
+          monthlyConsumption: '13',
+        },
+      }
+    ];
+
+    newUsers.forEach(user => Accounts.createUser(user));
+
+  }*/
+
 });
