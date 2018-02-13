@@ -11,6 +11,39 @@ Meteor.startup(() => {
         const userAlias = String(user._id);
 
         // TODO: Wrap this in Async so that user is not a promise but just a regular object
+
+        /*
+        const syncAccountCreate = Meteor.wrapAsync(ledger.accounts.create, ledger.accounts);
+        const syncInitialDeposit = Meteor.wrapAsync(ledger.transactions.transact, ledger.transactions);
+
+        try {
+            const acct = syncAccountCreate({
+                alias: userAlias,
+                keys: [{alias: 'exchange'}],
+                tags: {type: 'user'},
+            });
+
+            const builder = syncInitialDeposit();
+
+            builder.issue({
+                    assetAlias: 'sek',
+                    amount: 10000,
+                    destinationAccountAlias: userAlias,
+                    referenceData: {source: 'initialCurrencyDeposit'},
+            });
+            builder.issue({
+                assetAlias: 'kwh',
+                amount: 100,
+                destinationAccountAlias: userAlias,
+                referenceData: {source: 'initialEnergyDeposit'},
+            });
+
+        } catch(e) {
+            throw e
+        }
+        */
+
+
         ledger.accounts.create({
             alias: userAlias,
             keys: [{alias: 'exchange'}],
@@ -40,6 +73,7 @@ Meteor.startup(() => {
         user.userInfo = {
             name: '',
             monthlyConsumption: '',
+            aio_key: ''
         };
 
         if (options.profile) {

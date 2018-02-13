@@ -6,8 +6,13 @@ import { renderRoutes } from '../imports/startup/client/routes.js';
 
 console.log('inside client main');
 import '../imports/startup/both';
+import '../imports/startup/client';
+
+import EthereumConfig from '../imports/startup/client/ethereum-config.js';
 import 'react-select/dist/react-select.css';
 
 Meteor.startup(() => {
+    console.log('about to call init');
+    EthereumConfig.init();
     render(renderRoutes(), document.getElementById('render-target'));
 });

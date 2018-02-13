@@ -8,6 +8,7 @@ export default class ProfileInfo extends Component {
         this.state = {
             name: this.props.userProfile.name,
             consumption: this.props.userProfile.monthlyConsumption,
+            aioKey: this.props.userProfile.aioKey,
             alertVisible: false,
             saveSuccessful: false,
         };
@@ -28,6 +29,7 @@ export default class ProfileInfo extends Component {
         const newProfile = {
             name: this.state.name,
             monthlyConsumption: parseInt(this.state.consumption),
+            aioKey: this.state.aioKey,
         };
         console.log(newProfile);
         const self = this;
@@ -36,6 +38,7 @@ export default class ProfileInfo extends Component {
                 self.setState({
                     name: this.props.userProfile.name,
                     consumption: this.props.userProfile.monthlyConsumption,
+                    aioKey: this.props.userProfile.aioKey,
                     alertVisible: true,
                     saveSuccessful: false,
                 })
@@ -74,6 +77,14 @@ export default class ProfileInfo extends Component {
                             type="text"
                             name="consumption"
                             value={this.state.consumption}
+                            onChange={this.handleChange}
+                        />
+                        <br />
+                        Adafruit IO Key <br />
+                        <input
+                            type="text"
+                            name="aioKey"
+                            value={this.state.aioKey}
                             onChange={this.handleChange}
                         />
                         <br />

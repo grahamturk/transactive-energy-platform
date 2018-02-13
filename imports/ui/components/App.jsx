@@ -8,6 +8,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import EnergyGraph from './EnergyGraph.jsx';
+import FeedGraph from './FeedGraph.jsx';
 import ConsumptionReference from './ConsumptionReference.jsx';
 import Leaderboard from './Leaderboard.jsx';
 import ProfileInfo from './ProfileInfo.jsx';
@@ -70,7 +71,7 @@ export default class App extends Component {
                                 <ProfileInfo userProfile={userProfile}/>
                             </Col>
                             <Col md={8}>
-                                <EnergyGraph/>
+                                <FeedGraph/>
                                 <ConsumptionReference currentConsumption={Math.random() * 10000}/>
                             </Col>
                         </Row>

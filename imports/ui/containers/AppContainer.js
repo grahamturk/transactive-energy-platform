@@ -16,6 +16,7 @@ export default AppContainer = withTracker(() => {
                 name: user.userInfo.name,
                 txId: user.txId,
                 consumption: user.userInfo.monthlyConsumption,
+                aioKey: user.userInfo.aioKey,
             }
         }),
     }

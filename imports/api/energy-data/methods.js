@@ -5,6 +5,7 @@ import ledger from '../../startup/server/ledger-create.js';
 
 const baseUrl = 'http://api.eia.gov/series/?api_key=4f053fdb4a721607bb9f10445e52c152';
 //console.log("loaded the methods module");
+const baseFeedUrl = 'https://io.adafruit.com/api/v2/grahamt35/feeds/';
 
 Meteor.methods({
     'fetchEnergyData'(stateAbbr) {
@@ -27,6 +28,39 @@ Meteor.methods({
             const energyData = data.series[0].data;
             //console.log(energyData);
             return energyData;
+
+        } catch(e) {
+            throw e;
+        }
+    },
+// https://io.adafruit.com/api/v2/grahamt35/feeds/counter/data?X-AIO-KEY=6213a24ec9144493911762e9798b61d0
+
+    'fetchFeedData'(feedKey) {
+        check(feedKey, String);
+
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        const aioKey = Meteor.users.findOne(this.userId).userInfo.aioKey;
+
+        if (aioKey === '') {
+            throw new Meteor.Error('null-aio-key');
+        }
+
+        const urlEndpoint = baseFeedUrl + feedKey + '/data';
+
+        console.log(urlEndpoint);
+
+        this.unblock();
+        const reqOptions = {};
+        reqOptions['params'] = {};
+        reqOptions.params['X-AIO-KEY'] = aioKey;
+
+        try {
+
+            const res = HTTP.get(urlEndpoint, reqOptions);
+            return res.data;
 
         } catch(e) {
             throw e;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Alert, ListGroup, ListGroupItem } from 'react-bootstrap';
+import EthMarket from './EthMarket.jsx';
 import MarketplaceUser from './MarketplaceUser.jsx';
 
 export default class Marketplace extends Component {
@@ -15,7 +16,7 @@ export default class Marketplace extends Component {
             transferErrorMessage: '',
         };
 
-        this.handleBalaceDismiss = this.handleBalanceDismiss.bind(this);
+        this.handleBalanceDismiss = this.handleBalanceDismiss.bind(this);
         this.handleTransferDismiss = this.handleTransferDismiss.bind(this);
         this.handleTransfer = this.handleTransfer.bind(this);
     }
@@ -94,7 +95,6 @@ export default class Marketplace extends Component {
                     </Row>
                     <Row>
                         <Col md={4}>
-                            <br />
                             <h4>Current Balance:</h4>
                             {this.state.balanceAlertVisible ?
                                 <Alert bsStyle='danger' onDismiss={this.handleBalanceDismiss}>
@@ -119,6 +119,7 @@ export default class Marketplace extends Component {
                             </ListGroup>
                         </Col>
                     </Row>
+                    <EthMarket />
                 </Col>
             </Row>
         );

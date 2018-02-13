@@ -28,3 +28,7 @@ gadicc:blaze-react-component
 templating
 accounts-password
 useraccounts:bootstrap
+ethereum:web3
+ethereum:accounts
+ethereum:blocks
+ethereum:tools

@@ -1,6 +1,8 @@
+3stack:bignumber@2.0.0
 accounts-base@1.4.0
 accounts-password@1.5.0
 allow-deny@1.1.0
+amplify@1.0.0
 autoupdate@1.3.12
 babel-compiler@6.24.7
 babel-runtime@1.1.1
@@ -30,6 +32,12 @@ ecmascript-runtime-server@0.5.0
 ejson@1.1.0
 email@1.2.3
 es5-shim@4.6.15
+ethereum:accounts@0.4.0
+ethereum:blocks@0.3.2
+ethereum:tools@0.7.0
+ethereum:web3@0.20.2
+frozeman:persistent-minimongo@0.1.8
+frozeman:storage@0.1.9
 gadicc:blaze-react-component@1.4.0
 geojson-utils@1.0.10
 hot-code-push@1.0.4
