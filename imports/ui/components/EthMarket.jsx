@@ -88,15 +88,39 @@ export default class EthMarket extends Component {
             this.ethAccount = this.networkAddress;
 
             // Fetch instance of EnergyMarket contract
-            return EthereumConfig.contracts.EnergyMarket.at('0xe151709f28864417ed7864c319d9b011074640f4');
-            //return EthereumConfig.contracts.EnergyMarket.deployed();
+            /*
+            return EthereumConfig.contracts.EnergyMarket.deployed();
         }).then(instance => {
-            this.energyInstance = instance;
 
+            console.log('got the instance');
+            this.energyInstance = instance;
+            */
+
+            this.energyInstance = EthereumConfig.contracts.EnergyMarketInstance;
+
+            console.log('about to return isregistered');
             // Is the user registered with the EnergyMarket contract
-            return this.energyInstance.isRegistered.call(this.ethAccount);
+
+            //return this.energyInstance.isRegistered.call(this.ethAccount);
+
+
+            this.energyInstance.isRegistered.call(this.ethAccount, (error, result) => {
+                this.setState({
+                    userIsRegistered: result,
+                });
+
+                this.energyInstance.getAvailableEnergy.call((error, totalAvailableEnergy) => {
+                    this.setState({
+                        availableEnergy: totalAvailableEnergy.toNumber(),
+                    });
+                });
+            });
+        });
+
+        /*
         }).then(result => {
 
+            console.log('returned result of isRegistered');
             this.setState({
                 userIsRegistered: result,
             });
@@ -104,6 +128,7 @@ export default class EthMarket extends Component {
             // Fetch energy available in the market
             return this.energyInstance.getAvailableEnergy.call();
         }).then(totalAvailableEnergy => {
+            console.log('got total energy');
             this.setState({
                 availableEnergy: totalAvailableEnergy.toNumber(),
             });
@@ -117,6 +142,7 @@ export default class EthMarket extends Component {
                 alertMessage: err.message,
             });
         });
+        */
     }
 
     handleRequestCredentials() {
@@ -160,7 +186,7 @@ export default class EthMarket extends Component {
     handleRegister(event) {
         event.preventDefault();
 
-        this.energyInstance.registerUser({from: this.ethAccount}, (error, txHash) => {
+        this.energyInstance.registerUser((error, txHash) => {
             if (error) {
                 console.log('RegisterUser error');
                 console.log(err.message);
@@ -190,7 +216,7 @@ export default class EthMarket extends Component {
                         alertMessage: 'Successfully registered user for smart contract',
                     });
                 })
-        })
+        });
 
 
         // web3.eth.getTransactionReceipt(hashString [, callback])
