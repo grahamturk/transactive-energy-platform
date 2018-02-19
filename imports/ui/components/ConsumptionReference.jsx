@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 const CONVERSION_FACTORS = {
     LAPTOP: 70.0,
@@ -38,26 +38,24 @@ export default class ConsumptionReference extends Component {
         const convertedValue = Math.floor(this.props.currentConsumption / CONVERSION_FACTORS[this.state.selectedReference]);
         const imgString = '/img/' + this.state.selectedReference + '.png';
         return (
-            <Grid>
-                <Row>
-                    <Col className="aligned-col" md={1}>
-                        <h4> = {convertedValue}</h4>
-                    </Col>
-                    <Col className = "aligned-col" md={3}>
-                        <Select
-                            name="selected-reference"
-                            options={options}
-                            onChange={this.handleSelect.bind(this)}
-                            value={this.state.selectedReference}
-                            simpleValue
-                            clearable
-                        />
-                    </Col>
-                    <Col md={4}>
-                        <img src={imgString} alt=''/>
-                    </Col>
-                </Row>
-            </Grid>
+            <Row>
+                <Col className="aligned-col" md={1}>
+                    <h4> = {convertedValue}</h4>
+                </Col>
+                <Col className = "aligned-col" md={3}>
+                    <Select
+                        name="selected-reference"
+                        options={options}
+                        onChange={this.handleSelect.bind(this)}
+                        value={this.state.selectedReference}
+                        simpleValue
+                        clearable
+                    />
+                </Col>
+                <Col md={4}>
+                    <img src={imgString} alt=''/>
+                </Col>
+            </Row>
         );
     }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import Select from 'react-select';
 import { LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Line, Label } from 'recharts';
-import { Grid, Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 
 export default class FeedGraph extends Component {
     constructor(props) {
@@ -107,7 +107,7 @@ export default class FeedGraph extends Component {
         }
 
         return (
-            <Grid>
+            <div>
                 <Row>
                     <Col md={12}>
                         <p>
@@ -138,7 +138,7 @@ export default class FeedGraph extends Component {
                         { graphComponent }
                     </Col>
                 </Row>
-            </Grid>
+            </div>
         );
     }
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import EthereumConfig from '../../startup/client/ethereum-config.js';
 import { Row, Col, FormGroup, ControlLabel, FormControl, Button, Label, Alert } from 'react-bootstrap';
-import { uport, MNID } from '../../startup/client/uport-create.js';
 
 export default class EthMarket extends Component {
     constructor(props) {
@@ -20,15 +19,10 @@ export default class EthMarket extends Component {
 
         this.energyInstance = {};
         this.ethAccount = {};
-        this.networkAddress = '';
 
         this.setup = this.setup.bind(this);
 
-        this.waitForMined = this.waitForMined.bind(this);
-        this.pollingLoop = this.pollingLoop.bind(this);
-
         this.updateMarket = this.updateMarket.bind(this);
-        this.handleRequestCredentials = this.handleRequestCredentials.bind(this);
 
         this.handleTransact = this.handleTransact.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
@@ -43,81 +37,27 @@ export default class EthMarket extends Component {
         this.setup();
     }
 
-    waitForMined(txHash, response, pendingCB, successCB) {
-        if (response.blockNumber) {
-            successCB();
-        } else {
-            pendingCB();
-            this.pollingLoop(txHash, response, pendingCB, successCB)
-        }
-    };
-
-    pollingLoop(txHash, response, pendingCB, successCB) {
-        setTimeout(function () {
-            web3.eth.getTransaction(txHash, (error, response) => {
-                if (error) { throw error }
-                if (response === null) {
-                    response = { blockNumber: null };
-                } // Some ETH nodes do not return pending tx
-                this.waitForMined(txHash, response, pendingCB, successCB);
-            })
-        }, 1000) // check again in one sec.
-    };
-
     setup() {
         // Fetch user's Ethereum account
 
-        /*web3.eth.getAccounts((error, accounts) => {
+        web3.eth.getAccounts((error, accounts) => {
             if (error) {
                 console.log(error);
             }
 
             this.ethAccount = accounts[0];
-            */
-
-        uport.requestCredentials({
-            notifications: true,
-        }).then(credentials => {
-            console.log(credentials);
-
-            console.log('inside request credentials callback');
-            //return Meteor.call('uportAddCredentials', credentials);
-
-            const decodedId = MNID.decode(credentials.address);
-            this.networkAddress = decodedId.address;
-            this.ethAccount = this.networkAddress;
 
             // Fetch instance of EnergyMarket contract
-            /*
+
             return EthereumConfig.contracts.EnergyMarket.deployed();
         }).then(instance => {
 
             console.log('got the instance');
             this.energyInstance = instance;
-            */
 
-            this.energyInstance = EthereumConfig.contracts.EnergyMarketInstance;
-
-            console.log('about to return isregistered');
             // Is the user registered with the EnergyMarket contract
 
-            //return this.energyInstance.isRegistered.call(this.ethAccount);
-
-
-            this.energyInstance.isRegistered.call(this.ethAccount, (error, result) => {
-                this.setState({
-                    userIsRegistered: result,
-                });
-
-                this.energyInstance.getAvailableEnergy.call((error, totalAvailableEnergy) => {
-                    this.setState({
-                        availableEnergy: totalAvailableEnergy.toNumber(),
-                    });
-                });
-            });
-        });
-
-        /*
+            return this.energyInstance.isRegistered.call(this.ethAccount);
         }).then(result => {
 
             console.log('returned result of isRegistered');
@@ -141,23 +81,6 @@ export default class EthMarket extends Component {
                 transactionSuccessful: false,
                 alertMessage: err.message,
             });
-        });
-        */
-    }
-
-    handleRequestCredentials() {
-        uport.requestCredentials({
-            notifications: true,
-        }).then((credentials) => {
-            console.log(credentials);
-
-            //return Meteor.call('uportAddCredentials', credentials);
-
-            const decodedId = MNID.decode(credentials.address);
-            this.networkAddress = decodedId.address;
-
-        }).catch((err) => {
-            console.log(err.message);
         });
     }
 
@@ -186,42 +109,6 @@ export default class EthMarket extends Component {
     handleRegister(event) {
         event.preventDefault();
 
-        this.energyInstance.registerUser((error, txHash) => {
-            if (error) {
-                console.log('RegisterUser error');
-                console.log(err.message);
-
-                this.setState({
-                    userIsRegistered: false,
-                    alertVisible: true,
-                    transactionSuccessful: false,
-                    alertMessage: 'Failed to register. Either user has registered before or server error',
-                });
-            }
-            this.waitForMined(txHash, { blockNumber: null },
-                function pendingCB() {
-                    this.setState({
-                        alertVisible: true,
-                        transactionSuccessful: true,
-                        alertMessage: 'Waiting for block to be mined',
-                    });
-                },
-                function successCB(data) {
-                    console.log('CB success');
-                    console.log(data);
-                    this.setState({
-                        userIsRegistered: true,
-                        alertVisible: true,
-                        transactionSuccessful: true,
-                        alertMessage: 'Successfully registered user for smart contract',
-                    });
-                })
-        });
-
-
-        // web3.eth.getTransactionReceipt(hashString [, callback])
-
-        /*
         this.energyInstance.registerUser({from: this.ethAccount}).then(result => {
             this.setState({
                 userIsRegistered: true,
@@ -240,7 +127,6 @@ export default class EthMarket extends Component {
                 alertMessage: 'Failed to register. Either user has registered before or server error',
             });
         });
-        */
     }
 
     handleTransact(event) {
@@ -288,9 +174,6 @@ export default class EthMarket extends Component {
     handleGenerate(event) {
         event.preventDefault();
         const energyNum = parseInt(this.state.energyToGenerate);
-
-        console.log('energy to generate');
-        console.log(energyNum);
 
         this.setState({
             energyToGenerate: '',
@@ -359,9 +242,6 @@ export default class EthMarket extends Component {
                         </Alert> :
                         ''
                     }
-                    <Button bsStyle="primary" type="button" onClick={this.handleRequestCredentials}>
-                        Request uPort Credentials
-                    </Button>
                     <h5>Available energy: {this.state.availableEnergy !== '' ? this.state.availableEnergy : "Still loading"}</h5>
                     <form>
                         <FormGroup

@@ -3,3 +3,4 @@
 import './routes.js';
 import './uport-create.js';
 import './ethereum-config.js';
+import './infura-config.js';

@@ -9,10 +9,11 @@ import '../imports/startup/both';
 import '../imports/startup/client';
 
 import EthereumConfig from '../imports/startup/client/ethereum-config.js';
+import InfuraConfig from '../imports/startup/client/infura-config.js';
 import 'react-select/dist/react-select.css';
 
 Meteor.startup(() => {
-    console.log('about to call init');
     EthereumConfig.init();
+    InfuraConfig.init();
     render(renderRoutes(), document.getElementById('render-target'));
 });
